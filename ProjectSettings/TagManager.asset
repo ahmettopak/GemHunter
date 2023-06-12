@@ -4,7 +4,8 @@
 TagManager:
   serializedVersion: 2
   tags:
-  - GreenGem
+  - GemGreen
+  - Gem
   layers:
   - Default
   - TransparentFX

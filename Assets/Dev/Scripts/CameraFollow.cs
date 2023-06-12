@@ -1,8 +1,8 @@
 ﻿using UnityEngine;
 
 public class CameraFollow : MonoBehaviour {
-    public Transform target; // Takip edilecek hedefin referansı
-    public float smoothSpeed = 0.125f; // Takip etme hızı
+    public Transform target;
+    public float smoothSpeed = 0.125f;
 
     private Vector3 offset;
 

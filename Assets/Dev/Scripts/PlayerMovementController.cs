@@ -1,44 +1,52 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEditor;
 using UnityEngine;
-using UnityEngine.UIElements;
 
 public class PlayerMovementController : MonoBehaviour
 {
     [SerializeField] VariableJoystick variableJoystick;
     [SerializeField] float moveSpeed;
-    [SerializeField] float rotateSpeed;
-   
+    
+
+    Rigidbody _rigidbody;
     private Animator animator;
 
     private void Start() {
         animator = GetComponent<Animator>(); 
+        _rigidbody= GetComponent<Rigidbody>();
     }
 
-    void Update()
+    private void Update()
     {
-        Vector3 movement = new Vector3(variableJoystick.Horizontal, 0f, variableJoystick.Vertical);
-
+        #region Animation
         if (variableJoystick.Horizontal != 0 || variableJoystick.Vertical != 0) {
-           
-            animator.SetBool("isRun", true);
 
-            //Set anim speed
-            if (Math.Abs(variableJoystick.Vertical) > Math.Abs(variableJoystick.Horizontal)) {
-                animator.speed = Math.Abs(variableJoystick.Vertical);
-            }
-            else {
-                animator.speed = Math.Abs(variableJoystick.Horizontal);
-            }
+            animator.SetBool("isRun", true);
             
+            //Set anim speed
+            animator.speed = (Math.Abs(variableJoystick.Vertical) > Math.Abs(variableJoystick.Horizontal)) 
+                ? Math.Abs(variableJoystick.Vertical) 
+                : Math.Abs(variableJoystick.Horizontal);
+
         }
         else {
             animator.SetBool("isRun", false);
             animator.speed = Math.Abs(1);
-        }
-        transform.Translate(movement / moveSpeed);
-        transform.Rotate(0f, variableJoystick.Horizontal * rotateSpeed, 0);
+        } 
+        #endregion
+
+    }
+
+    private void FixedUpdate() {
+        Vector3 direction = new Vector3(variableJoystick.Horizontal, 0, variableJoystick.Vertical);
+        Move(direction);
+    }
+
+    private void Move(Vector3 direction) {
+
+        //Move
+        _rigidbody.velocity = direction * moveSpeed * Time.fixedDeltaTime;
+
+        //Roatate
+        transform.rotation = (variableJoystick.Horizontal != 0 || variableJoystick.Vertical != 0) ? Quaternion.LookRotation(direction, Vector3.up) : default;
     }
 }
