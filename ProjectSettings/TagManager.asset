@@ -6,6 +6,7 @@ TagManager:
   tags:
   - GemGreen
   - Gem
+  - SellPoint
   layers:
   - Default
   - TransparentFX
